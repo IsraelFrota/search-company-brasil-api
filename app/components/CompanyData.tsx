@@ -1,6 +1,6 @@
 import { Building, MapPin, Phone } from "lucide-react";
 import type { CompanyData as CompanyDataRecord } from "@/app/api/query";
-import { formatCnpj, formatCurrency, formatDate } from "@/app/lib/utils";
+import { formatCnpj, formatCurrency, formatDate, formatPhone } from "@/app/lib/utils";
 import { Field } from "./Field";
 
 export function CompanyData({ data }: { data: CompanyDataRecord }) {
@@ -78,7 +78,7 @@ export function CompanyData({ data }: { data: CompanyDataRecord }) {
 							<Phone className="w-3 h-3 text-orange-400 dark:text-orange-500" />
 						</div>
 						<Field label="Contato">
-							{[data.ddd_telefone_1, data.email].filter(Boolean).join(" · ")}
+							{[data.ddd_telefone_1, data.email].filter(Boolean).map(formatPhone).join(" · ")}
 						</Field>
 					</div>
 				</div>

@@ -42,8 +42,7 @@ export function TaxRegimeCard({
 					</p>
 					<p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
 						Empresa fora do Simples Nacional. Pode estar enquadrada no Lucro
-						Presumido ou no Lucro Real — essa distinção não é disponibilizada
-						publicamente pela Receita Federal.
+						Presumido ou no Lucro Real.
 					</p>
 				</>
 			) : (
