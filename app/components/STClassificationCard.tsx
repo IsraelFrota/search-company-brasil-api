@@ -3,8 +3,8 @@ import type { STClassification } from "@/app/api/actions";
 
 interface STClassificationCardProps {
 	classification: STClassification;
-	fiscalCnae: number;
-	fiscalCnaeDescription: string;
+	fiscalCnae: number | null;
+	fiscalCnaeDescription: string | null;
 }
 
 export function STClassificationCard({
@@ -50,9 +50,9 @@ export function STClassificationCard({
 			<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
 				O CNAE principal{" "}
 				<span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-amber-100 dark:bg-amber-900/30 font-mono font-semibold text-amber-700 dark:text-amber-300 text-xs">
-					{fiscalCnae}
+					{fiscalCnae ?? "—"}
 				</span>{" "}
-				— {fiscalCnaeDescription} não consta na lista de substituição tributária
+				— {fiscalCnaeDescription ?? "—"} não consta na lista de substituição tributária
 				do Decreto nº 29.560/2008.
 			</p>
 		</div>

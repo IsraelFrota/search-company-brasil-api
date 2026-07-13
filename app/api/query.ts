@@ -214,7 +214,7 @@ export async function searchCompanyByCnpj(
 		}
 
 		const result = {
-			success: true,
+			success: true as const,
 			status: 200,
 			data: parsed.data,
 			message: "Consulta realizada com sucesso",
