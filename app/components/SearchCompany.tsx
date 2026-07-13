@@ -6,6 +6,7 @@ import { searchCompany, type SearchState } from "@/app/api/actions";
 
 import { CompanyData } from "./CompanyData";
 import { CompanyHeader } from "./CompanyHeader";
+import { EmptyState } from "./EmptyState";
 import { ErrorMessage } from "./ErrorMessage";
 import { TaxRegimeCard } from "./TaxRegimeCard";
 import { SecondaryCnaes } from "./SecondaryCnaes";
@@ -31,6 +32,8 @@ export default function SearchCompany() {
 			<CompanyHeader formAction={formAction} isPending={isPending} />
 
 			{isPending && <LoadingSkeleton />}
+
+			{!isPending && state.status === "idle" && <EmptyState />}
 
 			{!isPending && state.status === "error" && (
 				<ErrorMessage message={state.message} />
