@@ -17,16 +17,16 @@ export function CompanyData({ data }: { data: CompanyDataRecord }) {
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4 sm:gap-y-5">
 				<div className="sm:col-span-2">
-					<Field label="Razão Social">{data.razao_social}</Field>
+					<Field label="Razão Social">{data.razao_social || "—"}</Field>
 				</div>
 				<Field label="Nome Fantasia">{data.nome_fantasia || "—"}</Field>
 				<Field label="CNPJ">
-					<span className="font-mono">{formatCnpj(data.cnpj)}</span>
+					<span className="font-mono">{data.cnpj ? formatCnpj(data.cnpj) : "—"}</span>
 				</Field>
-				<Field label="Natureza Jurídica">{data.natureza_juridica}</Field>
-				<Field label="Porte">{data.porte}</Field>
+				<Field label="Natureza Jurídica">{data.natureza_juridica || "—"}</Field>
+				<Field label="Porte">{data.porte || "—"}</Field>
 				<Field label="Capital Social">
-					{formatCurrency(data.capital_social)}
+					{data.capital_social != null ? formatCurrency(data.capital_social) : "—"}
 				</Field>
 				<Field label="Situação Cadastral">
 					<span
@@ -78,7 +78,7 @@ export function CompanyData({ data }: { data: CompanyDataRecord }) {
 							<Phone className="w-3 h-3 text-orange-400 dark:text-orange-500" />
 						</div>
 						<Field label="Contato">
-							{[data.ddd_telefone_1, data.email].filter(Boolean).map(formatPhone).join(" · ")}
+							{[data.ddd_telefone_1, data.email].filter(Boolean).map((v) => formatPhone(v)).join(" · ")}
 						</Field>
 					</div>
 				</div>

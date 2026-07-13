@@ -16,7 +16,15 @@ export interface SearchState {
 	message: string;
 }
 
-function findSTClassification(cnaeFiscal: number): STClassification {
+function findSTClassification(cnaeFiscal: number | null): STClassification {
+	if (cnaeFiscal == null) {
+		return {
+			classified: false,
+			annex: "",
+			matchedCnae: null,
+		};
+	}
+
 	const cnae = CNAE.find((c) => c.code === cnaeFiscal);
 
 	if (!cnae) {

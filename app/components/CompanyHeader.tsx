@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Search, Building2 } from "lucide-react";
 import { maskCnpj } from "@/app/lib/utils";
 
@@ -8,19 +8,22 @@ interface CompanyHeaderProps {
 }
 
 export function CompanyHeader({ formAction, isPending }: CompanyHeaderProps) {
-	const cnpjRef = useRef<HTMLInputElement>(null);
+	const [cnpjValue, setCnpjValue] = useState("");
 
-	const handleCnpjChange = useCallback(() => {
-		const input = cnpjRef.current;
-		if (input) {
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const input = e.target;
 			const cursorPos = input.selectionStart ?? 0;
-			const prevLength = input.value.length;
-			input.value = maskCnpj(input.value);
-			const newLength = input.value.length;
-			const newCursorPos = cursorPos + (newLength - prevLength);
-			input.setSelectionRange(newCursorPos, newCursorPos);
-		}
-	}, []);
+			const prevLength = cnpjValue.length;
+			const masked = maskCnpj(input.value);
+			setCnpjValue(masked);
+			requestAnimationFrame(() => {
+				const newCursorPos = cursorPos + (masked.length - prevLength);
+				input.setSelectionRange(newCursorPos, newCursorPos);
+			});
+		},
+		[cnpjValue]
+	);
 
 	return (
 		<div className="animate-scale-in card-base rounded-2xl p-5 sm:p-8 mb-6 sm:mb-10 shadow-sm">
@@ -49,14 +52,14 @@ export function CompanyHeader({ formAction, isPending }: CompanyHeaderProps) {
 							id="cnpj"
 							type="text"
 							name="cnpj"
-							ref={cnpjRef}
+							value={cnpjValue}
 							placeholder="00.000.000/0000-00"
 							maxLength={18}
 							required
 							autoComplete="off"
 							aria-label="CNPJ"
 							aria-required="true"
-							onChange={handleCnpjChange}
+							onChange={handleChange}
 							className="w-full sm:w-52 pl-9 pr-4 py-2.5 text-sm border border-zinc-200 dark:border-zinc-700/50 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-300 dark:placeholder:text-zinc-600 focus:ring-2 focus:ring-amber-400/20 dark:focus:ring-amber-300/20 focus:border-amber-400 dark:focus:border-amber-400/50 transition-all duration-200"
 						/>
 					</div>

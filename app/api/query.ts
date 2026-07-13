@@ -1,91 +1,5 @@
 import { z } from "zod";
 
-export interface Shareholder {
-	pais: string | null;
-	nome_socio: string;
-	codigo_pais: number | null;
-	faixa_etaria: string;
-	cnpj_cpf_do_socio: string;
-	qualificacao_socio: string;
-	codigo_faixa_etaria: number;
-	data_entrada_sociedade: string;
-	identificador_de_socio: number;
-	cpf_representante_legal: string;
-	nome_representante_legal: string;
-	codigo_qualificacao_socio: number;
-	qualificacao_representante_legal: string;
-	codigo_qualificacao_representante_legal: number;
-}
-
-export interface CnaeSecundario {
-	codigo: number;
-	descricao: string;
-}
-
-export interface CompanyData {
-	uf: string;
-	cep: string;
-	qsa: Shareholder[];
-	cnpj: string;
-	pais: string | null;
-	email: string | null;
-	porte: string;
-	bairro: string;
-	numero: string;
-	ddd_fax: string;
-	municipio: string;
-	logradouro: string;
-	cnae_fiscal: number;
-	codigo_pais: number | null;
-	complemento: string;
-	codigo_porte: number;
-	razao_social: string;
-	nome_fantasia: string;
-	capital_social: number;
-	ddd_telefone_1: string;
-	ddd_telefone_2: string;
-	opcao_pelo_mei: boolean | null;
-	descricao_porte: string;
-	codigo_municipio: number;
-	cnaes_secundarios: CnaeSecundario[];
-	natureza_juridica: string;
-	situacao_especial: string;
-	opcao_pelo_simples: boolean | null;
-	situacao_cadastral: number;
-	data_opcao_pelo_mei: string | null;
-	data_exclusao_do_mei: string | null;
-	cnae_fiscal_descricao: string;
-	codigo_municipio_ibge: number;
-	data_inicio_atividade: string;
-	data_situacao_especial: string | null;
-	data_opcao_pelo_simples: string | null;
-	data_situacao_cadastral: string;
-	nome_cidade_no_exterior: string;
-	codigo_natureza_juridica: number;
-	data_exclusao_do_simples: string | null;
-	motivo_situacao_cadastral: number;
-	ente_federativo_responsavel: string;
-	identificador_matriz_filial: number;
-	qualificacao_do_responsavel: number;
-	descricao_situacao_cadastral: string;
-	descricao_tipo_de_logradouro: string;
-	descricao_motivo_situacao_cadastral: string;
-	descricao_identificador_matriz_filial: string;
-}
-
-export interface ApiSuccess {
-	success: true;
-	status: number;
-	data: CompanyData;
-	message: string;
-}
-
-export interface ApiError {
-	success: false;
-	status: number;
-	message: string;
-}
-
 const ShareholderSchema = z
 	.object({
 		pais: z.string().nullable(),
@@ -105,12 +19,16 @@ const ShareholderSchema = z
 	})
 	.passthrough();
 
+export type Shareholder = z.infer<typeof ShareholderSchema>;
+
 const CnaeSecundarioSchema = z
 	.object({
 		codigo: z.number(),
 		descricao: z.string(),
 	})
 	.passthrough();
+
+export type CnaeSecundario = z.infer<typeof CnaeSecundarioSchema>;
 
 const CompanyDataSchema = z
 	.object({
@@ -123,7 +41,7 @@ const CompanyDataSchema = z
 		porte: z.string().nullable(),
 		bairro: z.string().nullable(),
 		numero: z.string().nullable(),
-		ddd_fax: z.union([z.string(), z.null()]).transform((v) => v ?? ""),
+		ddd_fax: z.string().nullable().transform((v) => v ?? ""),
 		municipio: z.string().nullable(),
 		logradouro: z.string().nullable(),
 		cnae_fiscal: z.number().nullable(),
@@ -133,14 +51,14 @@ const CompanyDataSchema = z
 		razao_social: z.string().nullable(),
 		nome_fantasia: z.string().nullable(),
 		capital_social: z.number().nullable(),
-		ddd_telefone_1: z.union([z.string(), z.null()]).transform((v) => v ?? ""),
-		ddd_telefone_2: z.union([z.string(), z.null()]).transform((v) => v ?? ""),
+		ddd_telefone_1: z.string().nullable().transform((v) => v ?? ""),
+		ddd_telefone_2: z.string().nullable().transform((v) => v ?? ""),
 		opcao_pelo_mei: z.boolean().nullable(),
 		descricao_porte: z.string().optional().default(""),
 		codigo_municipio: z.number().nullable(),
 		cnaes_secundarios: z.array(CnaeSecundarioSchema),
 		natureza_juridica: z.string().nullable(),
-		situacao_especial: z.union([z.string(), z.null()]).transform((v) => v ?? ""),
+		situacao_especial: z.string().nullable().transform((v) => v ?? ""),
 		opcao_pelo_simples: z.boolean().nullable(),
 		situacao_cadastral: z.number().nullable(),
 		data_opcao_pelo_mei: z.string().nullable(),
@@ -165,9 +83,52 @@ const CompanyDataSchema = z
 	})
 	.passthrough();
 
-const FETCH_TIMEOUT_MS = 10_000;
+export type CompanyData = z.infer<typeof CompanyDataSchema>;
 
-const cache = new Map<string, ApiSuccess>();
+export interface ApiSuccess {
+	success: true;
+	status: number;
+	data: CompanyData;
+	message: string;
+}
+
+export interface ApiError {
+	success: false;
+	status: number;
+	message: string;
+}
+
+const FETCH_TIMEOUT_MS = 10_000;
+const CACHE_MAX_ENTRIES = 200;
+const CACHE_TTL_MS = 30 * 60 * 1000;
+
+interface CacheEntry {
+	value: ApiSuccess;
+	expiresAt: number;
+}
+
+const cache = new Map<string, CacheEntry>();
+
+function cacheGet(key: string): ApiSuccess | undefined {
+	const entry = cache.get(key);
+	if (!entry) return undefined;
+	if (Date.now() > entry.expiresAt) {
+		cache.delete(key);
+		return undefined;
+	}
+	return entry.value;
+}
+
+function cacheSet(key: string, value: ApiSuccess): void {
+	if (cache.size >= CACHE_MAX_ENTRIES) {
+		const oldestKey = cache.keys().next().value;
+		if (oldestKey !== undefined) cache.delete(oldestKey);
+	}
+	cache.set(key, {
+		value,
+		expiresAt: Date.now() + CACHE_TTL_MS,
+	});
+}
 
 function sanitizeCnpj(cnpj: string): string {
 	return cnpj.replace(/\D/g, "").slice(0, 14);
@@ -175,6 +136,8 @@ function sanitizeCnpj(cnpj: string): string {
 
 function isValidCnpj(digits: string): boolean {
 	if (digits.length !== 14) return false;
+
+	if (new Set(digits).size === 1) return false;
 
 	const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 	const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
@@ -209,7 +172,7 @@ export async function searchCompanyByCnpj(
 		};
 	}
 
-	const cached = cache.get(sanitized);
+	const cached = cacheGet(sanitized);
 	if (cached) {
 		return { ...cached };
 	}
@@ -235,7 +198,7 @@ export async function searchCompanyByCnpj(
 			return {
 				success: false,
 				status: response.status,
-				message: `API retornou ${response.status}: ${response.statusText}`,
+				message: `Erro na consulta. Tente novamente.`,
 			};
 		}
 
@@ -250,14 +213,14 @@ export async function searchCompanyByCnpj(
 			};
 		}
 
-		const result: ApiSuccess = {
+		const result = {
 			success: true,
 			status: 200,
-			data: parsed.data as CompanyData,
+			data: parsed.data,
 			message: "Consulta realizada com sucesso",
 		};
 
-		cache.set(sanitized, result);
+		cacheSet(sanitized, result);
 
 		return { ...result };
 	} catch (err) {
