@@ -32,3 +32,20 @@ export function formatDate(dateStr: string | null): string {
 	}
 	return dateStr;
 }
+
+export function formatPhone(phone: string | null): string {
+	if (!phone) return "—";
+
+	const numbers = phone.replace(/\D/g, "");
+
+	switch (numbers.length) {
+		case 10:
+			return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+
+		case 11:
+			return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+
+		default:
+			return phone;
+	}
+}

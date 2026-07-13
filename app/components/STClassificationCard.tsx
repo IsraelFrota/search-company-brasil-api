@@ -24,15 +24,14 @@ export function STClassificationCard({
 					</h2>
 				</div>
 				<p className="font-bold text-sm sm:text-base text-zinc-700 dark:text-zinc-200 leading-relaxed">
-					Empresa enquadrada no Decreto nº 29.560/2008 — {classification.annex}.
+					Empresa enquadrada no Decreto nº 29.560/2008 do {classification.annex}.
 				</p>
 				<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
 					CNAE principal{" "}
 					<span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 font-mono font-semibold text-emerald-700 dark:text-emerald-300 text-xs">
 						{classification.matchedCnae.code}
 					</span>{" "}
-					— {classification.matchedCnae.description} está na lista de
-					substituição tributária de ICMS do Estado do Ceará.
+					— {classification.matchedCnae.description}
 				</p>
 			</div>
 		);
