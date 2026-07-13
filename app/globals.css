@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #f8fafc;
+	--foreground: #0f172a;
+	--card: rgba(255, 255, 255, 0.8);
+	--card-border: rgba(226, 232, 240, 0.8);
+	--card-hover: rgba(255, 255, 255, 0.95);
+	--accent: #fba91f;
+	--accent-light: #fcd068;
+	--muted: #94a3b8;
+	--surface: #f1f5f9;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	:root {
+		--background: #0a0a0f;
+		--foreground: #e2e8f0;
+		--card: rgba(24, 24, 32, 0.8);
+		--card-border: rgba(39, 39, 52, 0.8);
+		--card-hover: rgba(24, 24, 32, 0.95);
+		--accent: #fcd068;
+		--accent-light: #fde68a;
+		--muted: #64748b;
+		--surface: #1e1e2e;
+	}
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: Arial, Helvetica, sans-serif;
+	background-image:
+		radial-gradient(ellipse at 20% 0%, rgba(251, 169, 31, 0.08) 0px, transparent 50%),
+		radial-gradient(ellipse at 80% 0%, rgba(245, 158, 11, 0.06) 0px, transparent 50%),
+		radial-gradient(ellipse at 50% 100%, rgba(251, 169, 31, 0.03) 0px, transparent 50%);
+	background-attachment: fixed;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes shimmer {
+	0% { background-position: -200% 0; }
+	100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-up {
+	animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+	animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-shimmer {
+	background: linear-gradient(
+		90deg,
+		rgb(228 228 231 / 0.2) 25%,
+		rgb(228 228 231 / 0.5) 50%,
+		rgb(228 228 231 / 0.2) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+	.animate-shimmer {
+		background: linear-gradient(
+			90deg,
+			rgb(63 63 70 / 0.2) 25%,
+			rgb(63 63 70 / 0.5) 50%,
+			rgb(63 63 70 / 0.2) 75%
+		);
+		background-size: 200% 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+.delay-75 { animation-delay: 75ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-225 { animation-delay: 225ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-375 { animation-delay: 375ms; }
+
+.card-base {
+	background: var(--card);
+	border: 1px solid var(--card-border);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+
+.card-base:hover {
+	background: var(--card-hover);
+}
+
+input:focus:not(:focus-visible) {
+	outline: none;
 }
