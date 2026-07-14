@@ -21,7 +21,7 @@ export function SecondaryCnaes({ cnaes }: { cnaes: CnaeSecundario[] }) {
 				{cnaes.map((cnae) => (
 					<li
 						key={cnae.codigo}
-						className="py-2.5 flex items-baseline gap-3 text-sm rounded-xl px-2.5 -mx-2.5 hover:bg-zinc-50 dark:hover:bg-white/3 transition-colors duration-150"
+						className="py-2.5 flex items-baseline gap-3 text-sm rounded-xl px-2.5 -mx-2.5 hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors duration-150"
 					>
 						<span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/80 font-mono text-zinc-500 dark:text-zinc-400 text-xs font-medium shrink-0">
 							{cnae.codigo}

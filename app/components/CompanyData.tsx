@@ -64,9 +64,13 @@ export function CompanyData({ data }: { data: CompanyDataRecord }) {
 						<MapPin className="w-3 h-3 text-orange-400 dark:text-orange-500" />
 					</div>
 					<Field label="Endereço">
-						{data.descricao_tipo_de_logradouro} {data.logradouro}, {data.numero}
-						{data.complemento ? ` - ${data.complemento}` : ""} - {data.bairro},{" "}
-						{data.municipio} - {data.uf}, {data.cep}
+						{[data.descricao_tipo_de_logradouro, data.logradouro].filter(Boolean).join(" ")}
+						{data.numero ? `, ${data.numero}` : ""}
+						{data.complemento ? ` - ${data.complemento}` : ""}
+						{data.bairro ? ` - ${data.bairro}` : ""}
+						{data.municipio ? ` - ${data.municipio}` : ""}
+						{data.uf ? ` - ${data.uf}` : ""}
+						{data.cep ? `, ${data.cep}` : ""}
 					</Field>
 				</div>
 			</div>
@@ -77,9 +81,18 @@ export function CompanyData({ data }: { data: CompanyDataRecord }) {
 						<div className="flex items-center justify-center w-6 h-6 rounded-md bg-zinc-50 dark:bg-zinc-800 shrink-0 mt-0.5">
 							<Phone className="w-3 h-3 text-orange-400 dark:text-orange-500" />
 						</div>
-						<Field label="Contato">
-							{[data.ddd_telefone_1, data.email].filter(Boolean).map((v) => formatPhone(v)).join(" · ")}
-						</Field>
+					<Field label="Contato">
+						{data.ddd_telefone_1 && formatPhone(data.ddd_telefone_1)}
+						{data.ddd_telefone_1 && data.email && " · "}
+						{data.email && (
+							<a
+								href={`mailto:${data.email}`}
+								className="underline underline-offset-2 decoration-zinc-300 dark:decoration-zinc-600 hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors"
+							>
+								{data.email}
+							</a>
+						)}
+					</Field>
 					</div>
 				</div>
 			)}

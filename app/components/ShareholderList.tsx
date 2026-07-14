@@ -21,7 +21,7 @@ export function ShareholderList({ qsa }: { qsa: Shareholder[] }) {
 				{qsa.map((socio) => (
 					<li
 						key={`${socio.cnpj_cpf_do_socio}-${socio.nome_socio}`}
-						className="py-2.5 flex items-baseline justify-between gap-4 text-sm rounded-xl px-2.5 -mx-2.5 hover:bg-zinc-50 dark:hover:bg-white/3 transition-colors duration-150"
+						className="py-2.5 flex items-baseline justify-between gap-4 text-sm rounded-xl px-2.5 -mx-2.5 hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors duration-150"
 					>
 						<span className="text-zinc-700 dark:text-zinc-300 font-medium">
 							{socio.nome_socio}

@@ -1,22 +1,28 @@
-import SearchCompany from "@/app/components/SearchCompany";
+"use client";
+
+import { useState } from "react";
+import Navigation from "./components/Navigation";
+import SearchNCM from "./components/SearchNCM";
+import SearchCompany from "./components/SearchCompany";
+import { WelcomeCard } from "./components/WelcomeCard";
+import type { Render } from "./types";
 
 export default function Home() {
+	const [render, setRender] = useState<Render>("idle");
+
 	return (
-		<div className="flex flex-col flex-1 items-center justify-start min-h-screen w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-			<SearchCompany />
-			<footer className="mt-auto pt-12 w-full text-center">
-				<p className="text-xs text-zinc-300 dark:text-zinc-600">
-					Dados fornecidos pela{" "}
-					<a
-						href="https://brasilapi.com.br"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="underline underline-offset-2 decoration-zinc-300 dark:decoration-zinc-600 hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors"
-					>
-						Brasil API
-					</a>
-				</p>
-			</footer>
+		<div className="flex flex-1 min-h-screen">
+			<Navigation state={render} handler={setRender} />
+			<main className="flex-1 flex justify-center items-start w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+				{render === "Company" && <SearchCompany />}
+				{render === "NCM" && <SearchNCM />}
+				
+				{render === "idle" && (
+					<div className="flex items-center justify-center w-full h-full">
+						<WelcomeCard onSelect={setRender} />
+					</div>
+				)}
+			</main>
 		</div>
 	);
 }
