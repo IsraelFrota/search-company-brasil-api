@@ -12,6 +12,31 @@ export function STClassificationCard({
 	fiscalCnae,
 	fiscalCnaeDescription,
 }: STClassificationCardProps) {
+	if (classification.classified && classification.matchedCnae && classification.flag) {
+		return (
+			<div className="animate-slide-up delay-75 rounded-2xl border border-blue-200/80 dark:border-blue-800/40 bg-linear-to-br from-blue-50 via-blue-50/80 to-teal-50/50 dark:from-blue-950/20 dark:via-blue-950/10 dark:to-teal-950/10 p-5 sm:p-6 shadow-sm">
+				<div className="flex items-center gap-2.5 mb-3">
+					<div className="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+						<CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+					</div>
+					<h2 className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+						Enquadramento ST
+					</h2>
+				</div>
+				<p className="font-bold text-sm sm:text-base text-zinc-700 dark:text-zinc-200 leading-relaxed">
+					Empresa enquadrada no Decreto nº 32.900/2008 do Anexo I.
+				</p>
+				<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+					CNAE principal{" "}
+					<span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-blue-100 dark:bg-blue-900/30 font-mono font-semibold text-blue-700 dark:text-blue-300 text-xs">
+						{classification.matchedCnae.code}
+					</span>{" "}
+					— {classification.matchedCnae.description}
+				</p>
+			</div>
+		);
+	}
+
 	if (classification.classified && classification.matchedCnae) {
 		return (
 			<div className="animate-slide-up delay-75 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/40 bg-linear-to-br from-emerald-50 via-emerald-50/80 to-teal-50/50 dark:from-emerald-950/20 dark:via-emerald-950/10 dark:to-teal-950/10 p-5 sm:p-6 shadow-sm">
