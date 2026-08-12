@@ -7,7 +7,7 @@ export interface STClassification {
 	classified: boolean;
 	annex: string;
 	matchedCnae: Cnae | null;
-	flag?: boolean;
+	flag?: string;
 }
 
 export interface SearchState {
