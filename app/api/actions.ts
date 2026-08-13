@@ -7,7 +7,7 @@ export interface STClassification {
 	classified: boolean;
 	annex: string;
 	matchedCnae: Cnae | null;
-	flag?: string;
+	degree?: string;
 }
 
 export interface SearchState {
@@ -45,7 +45,7 @@ function findSTClassification(cnaeFiscal: number | null): STClassification {
 		classified: true,
 		annex,
 		matchedCnae: cnae,
-		flag: cnae.flag,
+		degree: cnae.decree,
 	};
 }
 

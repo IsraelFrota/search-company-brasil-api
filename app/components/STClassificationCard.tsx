@@ -12,7 +12,7 @@ export function STClassificationCard({
 	fiscalCnae,
 	fiscalCnaeDescription,
 }: STClassificationCardProps) {
-	if (classification.classified && classification.matchedCnae && classification.flag === "D32900/2008") {
+	if (classification.classified && classification.matchedCnae && classification.degree === "D32900/2008") {
 		return (
 			<div className="animate-slide-up delay-75 rounded-2xl border border-blue-200/80 dark:border-blue-800/40 bg-linear-to-br from-blue-50 via-blue-50/80 to-teal-50/50 dark:from-blue-950/20 dark:via-blue-950/10 dark:to-teal-950/10 p-5 sm:p-6 shadow-sm">
 				<div className="flex items-center gap-2.5 mb-3">
@@ -24,7 +24,7 @@ export function STClassificationCard({
 					</h2>
 				</div>
 				<p className="font-bold text-sm sm:text-base text-zinc-700 dark:text-zinc-200 leading-relaxed">
-					Empresa enquadrada no Decreto nº 32.900/2008 do Anexo I.
+					Empresa enquadrada no Decreto nº 32.900/2008.
 				</p>
 				<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
 					CNAE principal{" "}
@@ -37,7 +37,7 @@ export function STClassificationCard({
 		);
 	}
 
-	if (classification.classified && classification.matchedCnae && classification.flag === "D29560/2008") {
+	if (classification.classified && classification.matchedCnae && classification.degree === "D29560/2008") {
 		return (
 			<div className="animate-slide-up delay-75 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/40 bg-linear-to-br from-emerald-50 via-emerald-50/80 to-teal-50/50 dark:from-emerald-950/20 dark:via-emerald-950/10 dark:to-teal-950/10 p-5 sm:p-6 shadow-sm">
 				<div className="flex items-center gap-2.5 mb-3">
@@ -49,7 +49,7 @@ export function STClassificationCard({
 					</h2>
 				</div>
 				<p className="font-bold text-sm sm:text-base text-zinc-700 dark:text-zinc-200 leading-relaxed">
-					Empresa enquadrada no Decreto nº 29.560/2008 do {classification.annex}.
+					Empresa enquadrada no Decreto nº 29.560/2008.
 				</p>
 				<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
 					CNAE principal{" "}
@@ -62,7 +62,7 @@ export function STClassificationCard({
 		);
 	}
 
-	if (classification.classified && classification.matchedCnae && classification.flag === "D31270/2013") {
+	if (classification.classified && classification.matchedCnae && classification.degree === "D31270/2013") {
 		return (
 			<div className="animate-slide-up delay-75 rounded-2xl border border-violet-200/80 dark:border-violet-800/40 bg-linear-to-br from-violet-50 via-violet-50/80 to-teal-50/50 dark:from-violet-950/20 dark:via-violet-950/10 dark:to-teal-950/10 p-5 sm:p-6 shadow-sm">
 				<div className="flex items-center gap-2.5 mb-3">
@@ -74,7 +74,7 @@ export function STClassificationCard({
 					</h2>
 				</div>
 				<p className="font-bold text-sm sm:text-base text-zinc-700 dark:text-zinc-200 leading-relaxed">
-					Empresa enquadrada no Decreto nº 31.270/2013 do {classification.annex}.
+					Empresa enquadrada no Decreto nº 31.270/2013.
 				</p>
 				<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
 					CNAE principal{" "}
