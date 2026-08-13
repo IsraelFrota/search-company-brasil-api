@@ -38,8 +38,9 @@ function findSTClassification(cnaeFiscal: number | null): STClassification {
 
 	const annex =
 		cnae.group === "Atacado"
-			? "Anexo I (Comércio Atacadista)"
-			: "Anexo II (Comércio Varejista)";
+			? "Comércio Atacadista"
+			: cnae.group === "Varejo" ?
+				"Comércio Varejista" : "Outra Atividade Econômica";
 
 	return {
 		classified: true,
