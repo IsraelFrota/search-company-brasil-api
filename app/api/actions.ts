@@ -8,6 +8,7 @@ export interface STClassification {
 	annex: string;
 	matchedCnae: Cnae | null;
 	degree?: string;
+	type?: string;
 }
 
 export interface SearchState {
@@ -47,6 +48,7 @@ function findSTClassification(cnaeFiscal: number | null): STClassification {
 		annex,
 		matchedCnae: cnae,
 		degree: cnae.decree,
+		type: cnae.type,
 	};
 }
 

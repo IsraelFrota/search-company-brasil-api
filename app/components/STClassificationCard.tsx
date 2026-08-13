@@ -110,7 +110,7 @@ export function STClassificationCard({
 				<h2
 					className={`text-xs font-semibold uppercase tracking-wider ${styles.text}`}
 				>
-					Enquadramento ST
+					Enquadramento ST - ({classification.type})
 				</h2>
 			</div>
 
