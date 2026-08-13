@@ -9,6 +9,7 @@ interface CompanyHeaderProps {
 
 export function CompanyHeader({ formAction, isPending }: CompanyHeaderProps) {
 	const [cnpjValue, setCnpjValue] = useState("");
+	const [filter, setFilter] = useState("");
 
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +43,14 @@ export function CompanyHeader({ formAction, isPending }: CompanyHeaderProps) {
 					</div>
 				</div>
 
-				<form action={formAction} className="flex gap-2 shrink-0 w-full sm:w-auto" aria-busy={isPending}>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						formAction(new FormData(e.currentTarget));
+					}}
+					className="flex gap-2 shrink-0 w-full sm:w-auto"
+					aria-busy={isPending}
+				>
 					<div className="relative flex-1 sm:flex-none">
 						<label htmlFor="cnpj" className="sr-only">
 							CNPJ
@@ -62,6 +70,23 @@ export function CompanyHeader({ formAction, isPending }: CompanyHeaderProps) {
 							onChange={handleChange}
 							className="w-full sm:w-52 pl-9 pr-4 py-2.5 text-sm border border-zinc-200 dark:border-zinc-700/50 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-300 dark:placeholder:text-zinc-600 focus:ring-2 focus:ring-amber-400/20 dark:focus:ring-amber-300/20 focus:border-amber-400 dark:focus:border-amber-400/50 transition-all duration-200"
 						/>
+					</div>
+					<div className="relative flex-1 sm:flex-none">
+						<label htmlFor="filter-type" className="sr-only">
+							Segmento
+						</label>
+						<select
+							name="filter-type"
+							id="filter-type"
+							value={filter}
+							onChange={(e) => setFilter(e.target.value)}
+							className="w-full sm:w-44 pl-3 pr-8 py-2.5 text-sm border border-zinc-200 dark:border-zinc-700/50 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-300 dark:placeholder:text-zinc-600 focus:ring-2 focus:ring-amber-400/20 dark:focus:ring-amber-300/20 focus:border-amber-400 dark:focus:border-amber-400/50 transition-all duration-200 appearance-none cursor-pointer bg-no-repeat bg-[right_0.75rem_center] bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23a1a1aa%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22m6 9 6 6 6-6%22/></svg>')]"
+						>
+							<option value="">Todos os segmentos</option>
+							<option value="Móveis">Móveis</option>
+							<option value="Alimentos">Alimentos</option>
+							<option value="Material de Construção">Material de Construção</option>
+						</select>
 					</div>
 					<button
 						type="submit"

@@ -18,7 +18,7 @@ export interface SearchState {
 	message: string;
 }
 
-function findSTClassification(cnaeFiscal: number | null): STClassification {
+function findSTClassification(cnaeFiscal: number | null, filter = ""): STClassification {
 	if (cnaeFiscal == null) {
 		return {
 			classified: false,
@@ -30,6 +30,14 @@ function findSTClassification(cnaeFiscal: number | null): STClassification {
 	const cnae = CNAE.find((c) => c.code === cnaeFiscal);
 
 	if (!cnae) {
+		return {
+			classified: false,
+			annex: "",
+			matchedCnae: null,
+		};
+	}
+
+	if (filter && cnae.type !== filter) {
 		return {
 			classified: false,
 			annex: "",
@@ -56,8 +64,10 @@ export async function searchCompany(
 	_prevState: SearchState,
 	formData: FormData
 ): Promise<SearchState> {
-	const raw = formData.get("cnpj");
-	const cnpj = typeof raw === "string" ? raw : "";
+	const rawCnpj = formData.get("cnpj");
+	const rawFilter = formData.get("filter-type");
+	const cnpj = typeof rawCnpj === "string" ? rawCnpj : "";
+	const filter = typeof rawFilter === "string" ? rawFilter : "";
 
 	if (cnpj.trim().length === 0) {
 		return {
@@ -79,7 +89,7 @@ export async function searchCompany(
 		};
 	}
 
-	const classification = findSTClassification(result.data.cnae_fiscal);
+	const classification = findSTClassification(result.data.cnae_fiscal, filter);
 
 	return {
 		status: "success",
